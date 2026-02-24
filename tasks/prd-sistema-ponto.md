@@ -51,14 +51,14 @@ Sistema de controle de frequência para colaboradores utilizando Filament v5. O 
 **Descrição:** Como gestor, quero cadastrar feriados, pontos facultativos e dispensas parciais para que o sistema saiba quais dias não são úteis e quais colaboradores estão liberados.
 
 **Critérios de Aceite:**
-- [ ] Resource Filament para Holiday com CRUD
-- [ ] Campos: data, nome, tipo (feriado/ponto facultativo/dispensa parcial), recorrente (sim/não)
-- [ ] Campo "Abrangência": todos os colaboradores ou apenas selecionados
-- [ ] Quando abrangência = parcial: formulário para selecionar colaboradores liberados e informar motivo da dispensa para cada um
+- [x] Resource Filament para Holiday com CRUD
+- [x] Campos: data, nome, tipo (feriado/ponto facultativo/dispensa parcial), recorrente (sim/não)
+- [x] Campo "Abrangência": todos os colaboradores ou apenas selecionados
+- [x] Quando abrangência = parcial: formulário para selecionar colaboradores liberados e informar motivo da dispensa para cada um
 - [ ] Colaboradores dispensados parcialmente NÃO recebem "FALTA" naquele dia
-- [ ] Listagem com filtro por mês/ano e tipo
-- [ ] Gestor e Admin podem acessar
-- [ ] Testes passando
+- [x] Listagem com filtro por mês/ano e tipo
+- [x] Gestor e Admin podem acessar
+- [x] Testes passando
 
 ### US-005: Painel Colaborador — Marcar Ponto
 **Descrição:** Como colaborador, quero marcar meu ponto de entrada e saída com um clique para registrar minha frequência.
