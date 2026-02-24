@@ -64,13 +64,13 @@ Sistema de controle de frequência para colaboradores utilizando Filament v5. O 
 **Descrição:** Como colaborador, quero marcar meu ponto de entrada e saída com um clique para registrar minha frequência.
 
 **Critérios de Aceite:**
-- [ ] Página/widget no dashboard do colaborador com botão "Marcar Ponto"
-- [ ] Sistema identifica automaticamente qual campo preencher (entrada manhã, saída manhã, entrada tarde, saída tarde) com base no turno do colaborador e horários já registrados no dia
-- [ ] Horário registrado automaticamente (hora atual do servidor)
-- [ ] Rúbrica preenchida automaticamente com nome do colaborador
-- [ ] Se o colaborador está em turno diferente do padrão (troca pontual), ele pode selecionar o turno antes de marcar
-- [ ] Confirmação visual após marcação
-- [ ] Testes passando
+- [x] Página/widget no dashboard do colaborador com botão "Marcar Ponto"
+- [x] Sistema identifica automaticamente qual campo preencher (entrada manhã, saída manhã, entrada tarde, saída tarde) com base no turno do colaborador e horários já registrados no dia
+- [x] Horário registrado automaticamente (hora atual do servidor)
+- [x] Rúbrica preenchida automaticamente com nome do colaborador
+- [x] Se o colaborador está em turno diferente do padrão (troca pontual), ele pode selecionar o turno antes de marcar
+- [x] Confirmação visual após marcação
+- [x] Testes passando
 
 ### US-006: Painel Colaborador — Visualizar Meus Pontos
 **Descrição:** Como colaborador, quero ver meus pontos marcados no mês para acompanhar minha frequência.
