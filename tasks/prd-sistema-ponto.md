@@ -31,10 +31,10 @@ Sistema de controle de frequência para colaboradores utilizando Filament v5. O 
 **Descrição:** Como admin, quero gerenciar todos os usuários do sistema (admins, gestores e colaboradores) para controlar o acesso.
 
 **Critérios de Aceite:**
-- [ ] Resource Filament para User com CRUD completo
-- [ ] Campo de role (admin, manager, employee) no usuário
-- [ ] Apenas admin acessa este recurso
-- [ ] Testes passando
+- [x] Resource Filament para User com CRUD completo
+- [x] Campo de role (admin, manager, employee) no usuário
+- [x] Apenas admin acessa este recurso
+- [x] Testes passando
 
 ### US-003: Painel Gestor — Cadastro de Colaboradores
 **Descrição:** Como gestor, quero cadastrar colaboradores com suas informações (nome, matrícula, lotação, cargo, organização, turno padrão) para que possam usar o sistema.
