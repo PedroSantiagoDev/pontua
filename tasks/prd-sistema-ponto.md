@@ -40,12 +40,12 @@ Sistema de controle de frequência para colaboradores utilizando Filament v5. O 
 **Descrição:** Como gestor, quero cadastrar colaboradores com suas informações (nome, matrícula, lotação, cargo, organização, turno padrão) para que possam usar o sistema.
 
 **Critérios de Aceite:**
-- [ ] Resource Filament para Employee com CRUD
-- [ ] Campos: nome, matrícula, lotação, cargo/função, organização, turno padrão (manhã/tarde)
-- [ ] Ao criar colaborador, cria automaticamente um User vinculado com role `employee`
-- [ ] Validação de matrícula única
-- [ ] Gestor e Admin podem acessar
-- [ ] Testes passando
+- [x] Resource Filament para Employee com CRUD
+- [x] Campos: nome, matrícula, lotação, cargo/função, organização, turno padrão (manhã/tarde)
+- [x] Ao criar colaborador, cria automaticamente um User vinculado com role `employee`
+- [x] Validação de matrícula única
+- [x] Gestor e Admin podem acessar
+- [x] Testes passando
 
 ### US-004: Painel Gestor — Gerenciamento de Feriados, Pontos Facultativos e Dispensas
 **Descrição:** Como gestor, quero cadastrar feriados, pontos facultativos e dispensas parciais para que o sistema saiba quais dias não são úteis e quais colaboradores estão liberados.

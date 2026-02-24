@@ -2,8 +2,18 @@
 
 namespace App\Enums;
 
-enum Shift: string
+use Filament\Support\Contracts\HasLabel;
+
+enum Shift: string implements HasLabel
 {
     case Morning = 'morning';
     case Afternoon = 'afternoon';
+
+    public function getLabel(): string
+    {
+        return match ($this) {
+            self::Morning => 'Manhã',
+            self::Afternoon => 'Tarde',
+        };
+    }
 }
