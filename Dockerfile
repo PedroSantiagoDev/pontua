@@ -7,6 +7,8 @@ RUN npm run build
 
 FROM dunglas/frankenphp
 
+RUN setcap -r /usr/local/bin/frankenphp
+
 RUN install-php-extensions \
     pdo_pgsql \
     pgsql \
