@@ -1,59 +1,109 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Pontua
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+Sistema de controle de ponto e frequência de colaboradores, construído com Laravel 12 e Filament 5.
 
-## About Laravel
+## Funcionalidades
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+- Gestão de colaboradores, turnos e departamentos
+- Registro de ponto (entrada/saída manhã e tarde)
+- Folha de frequência com exportação em PDF e Excel
+- Gestão de feriados (nacionais, recorrentes e parciais)
+- Widget de registro de ponto no dashboard
+- Controle de acesso por perfis (Admin, Gestor, Colaborador)
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## Requisitos
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+- PHP 8.4+
+- Node.js 22+
+- Composer 2+
+- SQLite (local) ou PostgreSQL (produção)
 
-## Learning Laravel
+## Instalação local
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework. You can also check out [Laravel Learn](https://laravel.com/learn), where you will be guided through building a modern Laravel application.
+```bash
+# Clonar o repositório
+git clone <url-do-repositorio> pontua
+cd pontua
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+# Instalar dependências e configurar o projeto
+composer setup
+```
 
-## Laravel Sponsors
+O comando `composer setup` executa automaticamente:
+- Instalação das dependências PHP e Node.js
+- Criação do `.env` a partir do `.env.example`
+- Geração da `APP_KEY`
+- Migrations do banco de dados
+- Build dos assets (Vite)
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+### Seed de dados de teste (opcional)
 
-### Premium Partners
+```bash
+php artisan db:seed
+```
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+Cria usuários de teste, colaboradores, registros de ponto e feriados.
 
-## Contributing
+| Usuário | Email | Senha | Perfil |
+|---|---|---|---|
+| Administrador | admin@pontua.test | password | Admin |
+| Gestor | gestor@pontua.test | password | Gestor |
+| Maria Silva | maria@pontua.test | password | Colaborador |
+| João Santos | joao@pontua.test | password | Colaborador |
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+## Executando
 
-## Code of Conduct
+```bash
+composer run dev
+```
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+Inicia simultaneamente o servidor PHP, queue worker, logs (Pail) e o Vite dev server.
 
-## Security Vulnerabilities
+Acesse o painel em: [http://localhost:8000/pontua](http://localhost:8000/pontua)
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+## Testes
 
-## License
+```bash
+php artisan test --compact
+```
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+## Deploy (Render)
+
+O projeto está configurado para deploy no [Render](https://render.com) com Docker.
+
+### Via Blueprint (automático)
+
+1. No Render Dashboard, clique **New > Blueprint**
+2. Conecte o repositório Git
+3. O `render.yaml` configura o serviço automaticamente
+4. Preencha as variáveis marcadas como `sync: false`:
+   - `APP_KEY` — gere com `php artisan key:generate --show`
+   - `APP_URL` — domínio atribuído pelo Render (ex: `https://pontua.onrender.com`)
+   - `DATABASE_URL` — connection string do PostgreSQL
+
+### Variáveis de ambiente obrigatórias
+
+| Variável | Valor |
+|---|---|
+| `APP_KEY` | `base64:...` (gerar com artisan) |
+| `APP_ENV` | `production` |
+| `APP_DEBUG` | `false` |
+| `APP_URL` | `https://seu-dominio.onrender.com` |
+| `DB_CONNECTION` | `pgsql` |
+| `DATABASE_URL` | `postgresql://user:pass@host:port/db?sslmode=require` |
+| `SESSION_DRIVER` | `database` |
+| `CACHE_STORE` | `database` |
+| `QUEUE_CONNECTION` | `database` |
+| `LOG_CHANNEL` | `stderr` |
+
+O primeiro deploy cria automaticamente um usuário admin:
+- **Email:** admin@pontua.com
+- **Senha:** password (trocar após o primeiro acesso)
+
+## Stack
+
+- [Laravel 12](https://laravel.com)
+- [Filament 5](https://filamentphp.com)
+- [Livewire 4](https://livewire.laravel.com)
+- [Tailwind CSS 4](https://tailwindcss.com)
+- [Pest 4](https://pestphp.com)
