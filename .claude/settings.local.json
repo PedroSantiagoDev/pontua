@@ -10,7 +10,12 @@
       "mcp__laravel-boost__database-schema",
       "mcp__laravel-boost__list-artisan-commands",
       "mcp__laravel-boost__search-docs",
-      "mcp__laravel-boost__read-log-entries"
+      "mcp__laravel-boost__read-log-entries",
+      "Bash(ls:*)",
+      "mcp__laravel-boost__tinker",
+      "Bash(tail:*)",
+      "Bash(composer require:*)",
+      "Bash(git:*)"
     ]
   },
   "enableAllProjectMcpServers": true,
