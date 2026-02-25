@@ -55,7 +55,7 @@ Sistema de controle de frequência para colaboradores utilizando Filament v5. O 
 - [x] Campos: data, nome, tipo (feriado/ponto facultativo/dispensa parcial), recorrente (sim/não)
 - [x] Campo "Abrangência": todos os colaboradores ou apenas selecionados
 - [x] Quando abrangência = parcial: formulário para selecionar colaboradores liberados e informar motivo da dispensa para cada um
-- [ ] Colaboradores dispensados parcialmente NÃO recebem "FALTA" naquele dia
+- [x] Colaboradores dispensados parcialmente NÃO recebem "FALTA" naquele dia
 - [x] Listagem com filtro por mês/ano e tipo
 - [x] Gestor e Admin podem acessar
 - [x] Testes passando
@@ -76,42 +76,42 @@ Sistema de controle de frequência para colaboradores utilizando Filament v5. O 
 **Descrição:** Como colaborador, quero ver meus pontos marcados no mês para acompanhar minha frequência.
 
 **Critérios de Aceite:**
-- [ ] Tabela/calendário mostrando todos os dias do mês selecionado
-- [ ] Exibe horários de entrada/saída de cada turno marcado
-- [ ] Dias úteis sem marcação aparecem destacados visualmente (cor vermelha ou ícone de alerta)
-- [ ] Dias com dispensa parcial (colaborador liberado) aparecem com indicação visual diferente (ex: ícone ou cor azul) e motivo visível
-- [ ] Feriados e pontos facultativos identificados visualmente
-- [ ] Filtro por mês/ano
-- [ ] Finais de semana diferenciados visualmente
-- [ ] Testes passando
+- [x] Tabela/calendário mostrando todos os dias do mês selecionado
+- [x] Exibe horários de entrada/saída de cada turno marcado
+- [x] Dias úteis sem marcação aparecem destacados visualmente (cor vermelha ou ícone de alerta)
+- [x] Dias com dispensa parcial (colaborador liberado) aparecem com indicação visual diferente (ex: ícone ou cor azul) e motivo visível
+- [x] Feriados e pontos facultativos identificados visualmente
+- [x] Filtro por mês/ano
+- [x] Finais de semana diferenciados visualmente
+- [x] Testes passando
 
 ### US-007: Exportação — Folha Individual de Frequência (Excel)
 **Descrição:** Como gestor, quero exportar a folha de frequência individual de um colaborador em Excel no formato exato do template existente.
 
 **Critérios de Aceite:**
-- [ ] Botão "Exportar Excel" na listagem de colaboradores ou na página do colaborador
-- [ ] Seleção de mês/ano para exportação
-- [ ] Formato idêntico ao template `FREQUÊNCIA - MODELO.xlsx`:
+- [x] Botão "Exportar Excel" na listagem de colaboradores ou na página do colaborador
+- [x] Seleção de mês/ano para exportação
+- [x] Formato idêntico ao template `FREQUÊNCIA - MODELO.xlsx`:
   - Cabeçalho com dados da instituição (ESTADO DO MARANHAO, AGED-MA)
   - Dados do colaborador (matrícula, nome, período, cargo, lotação, organização)
   - Tabela com colunas: DIA | MANHÃ (ENTRADA: HORA/RUBRICA, SAÍDA: HORA/RUBRICA) | TARDE (ENTRADA: HORA/RUBRICA, SAÍDA: HORA/RUBRICA)
   - 31 linhas de dias
   - Seção OBSERVAÇÃO com feriados e pontos facultativos do mês
   - Campos de assinatura (Responsável pela frequência / Chefe Imediato)
-- [ ] Dias sem marcação em dia útil: campos preenchidos com "FALTA"
-- [ ] Dispensas parciais: colaborador liberado NÃO aparece como "FALTA"; linha fica em branco e o motivo vai para a seção OBSERVAÇÃO (ex: "Dia 15 - Dispensa parcial: Convocação para evento externo")
-- [ ] Feriados/pontos facultativos gerais: linha em branco, listados na seção OBSERVAÇÃO
-- [ ] Finais de semana: linhas em branco
-- [ ] Testes passando
+- [x] Dias sem marcação em dia útil: campos preenchidos com "FALTA"
+- [x] Dispensas parciais: colaborador liberado NÃO aparece como "FALTA"; linha fica em branco e o motivo vai para a seção OBSERVAÇÃO (ex: "Dia 15 - Dispensa parcial: Convocação para evento externo")
+- [x] Feriados/pontos facultativos gerais: linha em branco, listados na seção OBSERVAÇÃO
+- [x] Finais de semana: linhas em branco
+- [x] Testes passando
 
 ### US-008: Exportação — Folha Individual de Frequência (PDF)
 **Descrição:** Como gestor, quero exportar a folha de frequência em PDF para impressão.
 
 **Critérios de Aceite:**
-- [ ] Botão "Exportar PDF" junto ao botão de Excel
-- [ ] Layout idêntico ao Excel, formatado para impressão A4
-- [ ] Mesmo conteúdo e regras do US-007
-- [ ] Testes passando
+- [x] Botão "Exportar PDF" junto ao botão de Excel
+- [x] Layout idêntico ao Excel, formatado para impressão A4
+- [x] Mesmo conteúdo e regras do US-007
+- [x] Testes passando
 
 ### US-009: Exportação em Lote
 **Descrição:** Como gestor, quero exportar todas as folhas de frequência de todos os colaboradores de uma vez para facilitar a impressão mensal.
