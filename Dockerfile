@@ -5,17 +5,19 @@ RUN npm ci
 COPY . .
 RUN npm run build
 
-FROM php:8.4-cli
+FROM dunglas/frankenphp
 
-RUN apt-get update && apt-get install -y \
-    libpq-dev libzip-dev libicu-dev libpng-dev libjpeg-dev libfreetype6-dev unzip \
-    && docker-php-ext-configure gd --with-freetype --with-jpeg \
-    && docker-php-ext-install pdo_pgsql pgsql gd zip intl opcache \
-    && rm -rf /var/lib/apt/lists/*
+RUN install-php-extensions \
+    pdo_pgsql \
+    pgsql \
+    gd \
+    zip \
+    intl \
+    opcache
 
 COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 
-WORKDIR /var/www/html
+WORKDIR /app
 
 COPY composer.json composer.lock ./
 RUN composer install --no-dev --optimize-autoloader --no-scripts --no-interaction
@@ -28,6 +30,7 @@ RUN composer dump-autoload --optimize \
     && mkdir -p storage/framework/{cache,sessions,views} \
     && chmod -R 775 storage bootstrap/cache
 
+COPY Caddyfile /etc/caddy/Caddyfile
 COPY docker/start.sh /usr/local/bin/start.sh
 RUN chmod +x /usr/local/bin/start.sh
 

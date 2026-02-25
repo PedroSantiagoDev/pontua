@@ -10,5 +10,6 @@ php artisan db:seed --class=AdminUserSeeder --force
 echo "Caching config..."
 php artisan optimize
 
-echo "Starting server..."
-php artisan serve --host=0.0.0.0 --port=${PORT:-8080}
+echo "Starting FrankenPHP server..."
+export SERVER_NAME=":${PORT:-8080}"
+frankenphp run --config /etc/caddy/Caddyfile
