@@ -126,11 +126,11 @@ Sistema de controle de frequência para colaboradores utilizando Filament v5. O 
 **Descrição:** Como admin, quero que cada perfil acesse apenas o que lhe é permitido.
 
 **Critérios de Aceite:**
-- [ ] **Admin:** acesso total (gerenciar usuários, colaboradores, feriados, ver todos os pontos, exportar)
-- [ ] **Gestor (Manager):** cadastrar colaboradores, gerenciar feriados, ver pontos de todos, exportar
-- [ ] **Colaborador (Employee):** marcar próprio ponto, ver próprios pontos apenas
-- [ ] Policies Laravel para cada model
-- [ ] Testes de autorização passando
+- [x] **Admin:** acesso total (gerenciar usuários, colaboradores, feriados, ver todos os pontos, exportar)
+- [x] **Gestor (Manager):** cadastrar colaboradores, gerenciar feriados, ver pontos de todos, exportar
+- [x] **Colaborador (Employee):** marcar próprio ponto, ver próprios pontos apenas
+- [x] Policies Laravel para cada model
+- [x] Testes de autorização passando
 
 ## Requisitos Funcionais
 
