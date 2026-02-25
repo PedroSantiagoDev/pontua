@@ -8,6 +8,7 @@ use App\Models\TimeEntry;
 use App\Services\Concerns\ClassifiesWorkDays;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Collection;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class FrequencySheetPdfExporter
@@ -24,6 +25,31 @@ class FrequencySheetPdfExporter
             ->setPaper('a4', 'portrait');
 
         $fileName = "frequencia-{$employee->inscription}-{$month}-{$year}.pdf";
+
+        return response()->streamDownload(function () use ($pdf): void {
+            echo $pdf->output();
+        }, $fileName, [
+            'Content-Type' => 'application/pdf',
+        ]);
+    }
+
+    /**
+     * @param  Collection<int, Employee>  $employees
+     */
+    public function generateBatch(Collection $employees, int $month, int $year): StreamedResponse
+    {
+        $sheets = $employees->map(fn (Employee $employee): array => $this->prepareData($employee, $month, $year));
+
+        $pdf = Pdf::loadView('exports.frequency-sheet-pdf-batch', ['sheets' => $sheets])
+            ->setPaper('a4', 'portrait');
+
+        $monthNames = [
+            1 => 'Janeiro', 2 => 'Fevereiro', 3 => 'Marco', 4 => 'Abril',
+            5 => 'Maio', 6 => 'Junho', 7 => 'Julho', 8 => 'Agosto',
+            9 => 'Setembro', 10 => 'Outubro', 11 => 'Novembro', 12 => 'Dezembro',
+        ];
+
+        $fileName = "frequencias-{$monthNames[$month]}-{$year}.pdf";
 
         return response()->streamDownload(function () use ($pdf): void {
             echo $pdf->output();

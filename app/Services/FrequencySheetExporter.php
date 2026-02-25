@@ -7,6 +7,7 @@ use App\Models\EmployeeHoliday;
 use App\Models\TimeEntry;
 use App\Services\Concerns\ClassifiesWorkDays;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Collection;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Style\Alignment;
 use PhpOffice\PhpSpreadsheet\Style\Border;
@@ -23,8 +24,32 @@ class FrequencySheetExporter
     public function generate(Employee $employee, int $month, int $year): Spreadsheet
     {
         $spreadsheet = new Spreadsheet;
-        $sheet = $spreadsheet->getActiveSheet();
+        $this->writeSheet($spreadsheet->getActiveSheet(), $employee, $month, $year);
 
+        return $spreadsheet;
+    }
+
+    /**
+     * @param  Collection<int, Employee>  $employees
+     */
+    public function generateBatch(Collection $employees, int $month, int $year): Spreadsheet
+    {
+        $spreadsheet = new Spreadsheet;
+        $spreadsheet->removeSheetByIndex(0);
+
+        foreach ($employees as $employee) {
+            $sheet = $spreadsheet->createSheet();
+            $sheet->setTitle(mb_substr($employee->name, 0, 31));
+            $this->writeSheet($sheet, $employee, $month, $year);
+        }
+
+        $spreadsheet->setActiveSheetIndex(0);
+
+        return $spreadsheet;
+    }
+
+    private function writeSheet(Worksheet $sheet, Employee $employee, int $month, int $year): void
+    {
         $this->setColumnWidths($sheet);
         $this->writeHeader($sheet);
         $this->writeEmployeeData($sheet, $employee, $month, $year);
@@ -35,8 +60,6 @@ class FrequencySheetExporter
         $this->writeObservations($sheet, $observations);
         $this->writeSignatures($sheet);
         $this->applyBorders($sheet);
-
-        return $spreadsheet;
     }
 
     private function setColumnWidths(Worksheet $sheet): void

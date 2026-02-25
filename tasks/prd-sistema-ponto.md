@@ -117,10 +117,10 @@ Sistema de controle de frequência para colaboradores utilizando Filament v5. O 
 **Descrição:** Como gestor, quero exportar todas as folhas de frequência de todos os colaboradores de uma vez para facilitar a impressão mensal.
 
 **Critérios de Aceite:**
-- [ ] Action na listagem de colaboradores para exportar todos
-- [ ] Seleção de mês/ano
-- [ ] Gera arquivo Excel com uma aba por colaborador (igual template original) ou PDF com uma página por colaborador
-- [ ] Testes passando
+- [x] Action na listagem de colaboradores para exportar todos
+- [x] Seleção de mês/ano
+- [x] Gera arquivo Excel com uma aba por colaborador (igual template original) ou PDF com uma página por colaborador
+- [x] Testes passando
 
 ### US-010: Autorização e Políticas de Acesso
 **Descrição:** Como admin, quero que cada perfil acesse apenas o que lhe é permitido.
