@@ -10,8 +10,6 @@ use Livewire\Livewire;
 
 use function Pest\Laravel\actingAs;
 
-// --- Visibility ---
-
 it('is visible to employee users', function () {
     $employee = Employee::factory()->create();
 
@@ -34,8 +32,6 @@ it('is not visible to manager users', function () {
 
     expect(ClockInWidget::canView())->toBeFalse();
 });
-
-// --- Morning shift clock in ---
 
 it('clocks in morning entry for morning shift employee', function () {
     Carbon::setTestNow(Carbon::parse('2026-02-24 08:05'));
@@ -105,8 +101,6 @@ it('shows all done when morning shift is complete', function () {
         ->assertNotified();
 });
 
-// --- Afternoon shift clock in ---
-
 it('clocks in afternoon entry for afternoon shift employee', function () {
     Carbon::setTestNow(Carbon::parse('2026-02-24 13:10'));
 
@@ -155,8 +149,6 @@ it('clocks in afternoon exit after afternoon entry', function () {
     expect($entry->afternoon_exit)->toBe('19:00');
 });
 
-// --- Shift override ---
-
 it('allows shift override and records it on time entry', function () {
     Carbon::setTestNow(Carbon::parse('2026-02-24 08:00'));
 
@@ -196,8 +188,6 @@ it('does not set shift override when using default shift', function () {
     expect($entry->shift_override)->toBeNull();
 });
 
-// --- Sequential clock in (full flow) ---
-
 it('handles full morning clock in flow sequentially', function () {
     $employee = Employee::factory()->morning()->create();
 
@@ -222,8 +212,6 @@ it('handles full morning clock in flow sequentially', function () {
     expect($entry->morning_entry)->toBe('08:00')
         ->and($entry->morning_exit)->toBe('14:00');
 });
-
-// --- Defaults ---
 
 it('defaults selected shift to employee default shift', function () {
     $employee = Employee::factory()->afternoon()->create();

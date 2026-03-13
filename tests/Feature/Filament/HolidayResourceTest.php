@@ -13,8 +13,6 @@ use Livewire\Livewire;
 use function Pest\Laravel\actingAs;
 use function Pest\Laravel\assertDatabaseHas;
 
-// --- Access Control ---
-
 it('allows admin to access the holidays list page', function () {
     actingAs(User::factory()->admin()->create());
 
@@ -35,8 +33,6 @@ it('prevents employee from accessing the holidays list page', function () {
     Livewire::test(ListHolidays::class)
         ->assertForbidden();
 });
-
-// --- Listing ---
 
 it('displays holidays in the table', function () {
     actingAs(User::factory()->admin()->create());
@@ -94,8 +90,6 @@ it('can filter holidays by year', function () {
         ->assertCanSeeTableRecords(collect([$thisYear]))
         ->assertCanNotSeeTableRecords(collect([$lastYear]));
 });
-
-// --- Create ---
 
 it('allows admin to access the create holiday page', function () {
     actingAs(User::factory()->admin()->create());
@@ -212,8 +206,6 @@ it('validates required fields on create', function (array $data, array $errors) 
     '`scope` is required' => [['scope' => null], ['scope' => 'required']],
 ]);
 
-// --- Edit ---
-
 it('allows admin to access the edit holiday page', function () {
     actingAs(User::factory()->admin()->create());
 
@@ -288,8 +280,6 @@ it('can update a holiday to partial scope with employees', function () {
         ->and($holiday->employees)->toHaveCount(1)
         ->and($holiday->employees->first()->pivot->reason)->toBe('Motivo da dispensa');
 });
-
-// --- Delete ---
 
 it('can delete a holiday', function () {
     actingAs(User::factory()->admin()->create());

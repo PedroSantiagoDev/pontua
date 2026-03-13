@@ -12,8 +12,6 @@ use Livewire\Livewire;
 use function Pest\Laravel\actingAs;
 use function Pest\Laravel\assertDatabaseHas;
 
-// --- Access Control ---
-
 it('allows admin to access the employees list page', function () {
     actingAs(User::factory()->admin()->create());
 
@@ -34,8 +32,6 @@ it('prevents employee from accessing the employees list page', function () {
     Livewire::test(ListEmployees::class)
         ->assertForbidden();
 });
-
-// --- Listing ---
 
 it('displays employees in the table', function () {
     actingAs(User::factory()->admin()->create());
@@ -66,8 +62,6 @@ it('can search employees by inscription', function () {
         ->searchTable($employees->first()->inscription)
         ->assertCanSeeTableRecords($employees->where('inscription', $employees->first()->inscription));
 });
-
-// --- Create ---
 
 it('allows admin to access the create page', function () {
     actingAs(User::factory()->admin()->create());
@@ -193,8 +187,6 @@ it('validates unique email on create', function () {
         ->assertHasFormErrors(['email' => 'unique']);
 });
 
-// --- Edit ---
-
 it('allows admin to access the edit page', function () {
     actingAs(User::factory()->admin()->create());
 
@@ -266,8 +258,6 @@ it('allows keeping the same inscription on edit', function () {
         ->assertHasNoFormErrors()
         ->assertNotified();
 });
-
-// --- Delete ---
 
 it('can delete an employee', function () {
     actingAs(User::factory()->admin()->create());

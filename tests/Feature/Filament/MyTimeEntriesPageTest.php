@@ -12,8 +12,6 @@ use Livewire\Livewire;
 
 use function Pest\Laravel\actingAs;
 
-// --- Access control ---
-
 it('is accessible to employee users', function () {
     $employee = Employee::factory()->create();
 
@@ -41,8 +39,6 @@ it('is not accessible to manager users', function () {
         ->assertForbidden();
 });
 
-// --- Defaults ---
-
 it('defaults to current month and year', function () {
     Carbon::setTestNow(Carbon::parse('2026-03-15'));
 
@@ -68,8 +64,6 @@ it('returns correct number of days for the selected month', function () {
 
     expect($days)->toHaveCount(28);
 });
-
-// --- Time entries ---
 
 it('displays time entries for days with records', function () {
     Carbon::setTestNow(Carbon::parse('2026-02-24'));
@@ -113,8 +107,6 @@ it('marks past weekdays without entries as absent', function () {
         ->and($feb2['observation'])->toBe('FALTA');
 });
 
-// --- Weekends ---
-
 it('identifies weekends correctly', function () {
     Carbon::setTestNow(Carbon::parse('2026-02-24'));
 
@@ -136,8 +128,6 @@ it('identifies weekends correctly', function () {
 
     expect($feb7['type'])->toBe('weekend');
 });
-
-// --- Holidays ---
 
 it('identifies holidays with scope all', function () {
     Carbon::setTestNow(Carbon::parse('2026-02-24'));
@@ -209,8 +199,6 @@ it('identifies recurrent holidays by month and day', function () {
     expect($feb5['type'])->toBe('holiday')
         ->and($feb5['observation'])->toBe('Feriado Recorrente');
 });
-
-// --- Dispensations ---
 
 it('shows dispensation for employee included in partial scope', function () {
     Carbon::setTestNow(Carbon::parse('2026-02-24'));
@@ -285,8 +273,6 @@ it('shows dispensation with scope all for all employees', function () {
         ->and($feb3['observation'])->toContain('Dispensa Geral');
 });
 
-// --- Future days ---
-
 it('does not mark future days as absent', function () {
     Carbon::setTestNow(Carbon::parse('2026-02-15'));
 
@@ -303,8 +289,6 @@ it('does not mark future days as absent', function () {
     expect($feb16['type'])->toBe('future')
         ->and($feb16['observation'])->toBeNull();
 });
-
-// --- Filter ---
 
 it('updates calendar when changing month and year', function () {
     Carbon::setTestNow(Carbon::parse('2026-03-15'));

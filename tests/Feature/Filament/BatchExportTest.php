@@ -7,10 +7,6 @@ use Livewire\Livewire;
 
 use function Pest\Laravel\actingAs;
 
-// ============================================================
-// Batch Excel Export — Access Control
-// ============================================================
-
 it('shows batch Excel export action for admin users', function () {
     actingAs(User::factory()->admin()->create());
 
@@ -31,10 +27,6 @@ it('hides batch Excel export action for employee users', function () {
     Livewire::test(ListEmployees::class)
         ->assertForbidden();
 });
-
-// ============================================================
-// Batch Excel Export — Validation
-// ============================================================
 
 it('requires month to batch export Excel', function () {
     actingAs(User::factory()->admin()->create());
@@ -58,10 +50,6 @@ it('requires year to batch export Excel', function () {
         ->assertHasActionErrors(['year' => 'required']);
 });
 
-// ============================================================
-// Batch Excel Export — Execution
-// ============================================================
-
 it('can call batch Excel export action with month and year', function () {
     actingAs(User::factory()->admin()->create());
 
@@ -73,10 +61,6 @@ it('can call batch Excel export action with month and year', function () {
             'year' => 2026,
         ]);
 });
-
-// ============================================================
-// Batch PDF Export — Access Control
-// ============================================================
 
 it('shows batch PDF export action for admin users', function () {
     actingAs(User::factory()->admin()->create());
@@ -98,10 +82,6 @@ it('hides batch PDF export action for employee users', function () {
     Livewire::test(ListEmployees::class)
         ->assertForbidden();
 });
-
-// ============================================================
-// Batch PDF Export — Validation
-// ============================================================
 
 it('requires month to batch export PDF', function () {
     actingAs(User::factory()->admin()->create());
@@ -125,10 +105,6 @@ it('requires year to batch export PDF', function () {
         ->assertHasActionErrors(['year' => 'required']);
 });
 
-// ============================================================
-// Batch PDF Export — Execution
-// ============================================================
-
 it('can call batch PDF export action with month and year', function () {
     actingAs(User::factory()->admin()->create());
 
@@ -140,10 +116,6 @@ it('can call batch PDF export action with month and year', function () {
             'year' => 2026,
         ]);
 });
-
-// ============================================================
-// Service-level batch tests
-// ============================================================
 
 it('generates Excel spreadsheet with one sheet per employee', function () {
     $employees = Employee::factory()->count(3)->create();

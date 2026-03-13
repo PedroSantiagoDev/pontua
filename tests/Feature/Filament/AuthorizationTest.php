@@ -16,10 +16,6 @@ use Livewire\Livewire;
 
 use function Pest\Laravel\actingAs;
 
-// ============================================================
-// TimeEntryPolicy
-// ============================================================
-
 it('allows admin to view any time entries via policy', function () {
     $admin = User::factory()->admin()->create();
 
@@ -151,10 +147,6 @@ it('prevents employee from deleting a time entry', function () {
     expect($employee->user->can('delete', $entry))->toBeFalse();
 });
 
-// ============================================================
-// UserPolicy — Admin-only resource
-// ============================================================
-
 it('allows admin full access to user management', function () {
     $admin = User::factory()->admin()->create();
     $target = User::factory()->create();
@@ -191,10 +183,6 @@ it('prevents employee from accessing user management', function () {
     Livewire::test(ListUsers::class)->assertForbidden();
     Livewire::test(CreateUser::class)->assertForbidden();
 });
-
-// ============================================================
-// EmployeePolicy — Admin and Manager
-// ============================================================
 
 it('allows admin full access to employee management', function () {
     $admin = User::factory()->admin()->create();
@@ -234,10 +222,6 @@ it('prevents employee from accessing employee management', function () {
     Livewire::test(CreateEmployee::class)->assertForbidden();
 });
 
-// ============================================================
-// HolidayPolicy — Admin and Manager
-// ============================================================
-
 it('allows admin full access to holiday management', function () {
     $admin = User::factory()->admin()->create();
     $holiday = Holiday::factory()->create();
@@ -276,10 +260,6 @@ it('prevents employee from accessing holiday management', function () {
     Livewire::test(CreateHoliday::class)->assertForbidden();
 });
 
-// ============================================================
-// Employee-only features — ClockInWidget and MyTimeEntries
-// ============================================================
-
 it('grants employee access to ClockInWidget and MyTimeEntries', function () {
     $employee = Employee::factory()->create();
 
@@ -309,10 +289,6 @@ it('denies manager access to ClockInWidget and MyTimeEntries', function () {
 
     Livewire::test(MyTimeEntries::class)->assertForbidden();
 });
-
-// ============================================================
-// Admin self-delete protection
-// ============================================================
 
 it('prevents admin from deleting themselves via policy', function () {
     $admin = User::factory()->admin()->create();

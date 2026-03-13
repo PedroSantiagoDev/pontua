@@ -8,8 +8,6 @@ use Livewire\Livewire;
 
 use function Pest\Laravel\actingAs;
 
-// --- Access control ---
-
 it('shows export action for admin users', function () {
     $admin = User::factory()->admin()->create();
     $employee = Employee::factory()->create();
@@ -39,8 +37,6 @@ it('denies employee users access to employees page', function () {
         ->assertForbidden();
 });
 
-// --- Action execution ---
-
 it('can call export action with month and year', function () {
     $admin = User::factory()->admin()->create();
     $employee = Employee::factory()->create();
@@ -53,8 +49,6 @@ it('can call export action with month and year', function () {
             'year' => 2026,
         ]);
 });
-
-// --- Validation ---
 
 it('requires month to export', function () {
     $admin = User::factory()->admin()->create();

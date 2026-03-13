@@ -2,7 +2,8 @@
     "agents": [
         "claude_code",
         "copilot",
-        "opencode"
+        "opencode",
+        "gemini"
     ],
     "guidelines": true,
     "herd_mcp": false,
