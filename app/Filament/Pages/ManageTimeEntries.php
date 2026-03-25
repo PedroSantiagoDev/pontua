@@ -22,19 +22,22 @@ use Illuminate\Support\Carbon;
 use Illuminate\Support\Collection;
 use Livewire\Attributes\Url;
 
-class MyTimeEntries extends Page implements HasTable
+class ManageTimeEntries extends Page implements HasTable
 {
     use InteractsWithTable;
 
-    protected string $view = 'filament.pages.my-time-entries';
+    protected string $view = 'filament.pages.manage-time-entries';
 
-    protected static ?string $title = 'Meus Pontos';
+    protected static ?string $title = 'Gerenciar Pontos';
 
-    protected static ?string $navigationLabel = 'Meus Pontos';
+    protected static ?string $navigationLabel = 'Gerenciar Pontos';
 
-    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedClipboardDocumentList;
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedClipboardDocumentCheck;
 
-    protected static ?int $navigationSort = 2;
+    protected static ?int $navigationSort = 10;
+
+    #[Url]
+    public ?int $selectedEmployeeId = null;
 
     #[Url]
     public int $selectedMonth;
@@ -46,13 +49,14 @@ class MyTimeEntries extends Page implements HasTable
     {
         $user = auth()->user();
 
-        return $user && $user->isEmployee() && $user->employee !== null;
+        return $user && ($user->isAdmin() || $user->isManager());
     }
 
     public function mount(): void
     {
-        $this->selectedMonth = (int) now()->month;
-        $this->selectedYear = (int) now()->year;
+        $lastMonth = now()->subMonth();
+        $this->selectedMonth = (int) $lastMonth->month;
+        $this->selectedYear = (int) $lastMonth->year;
     }
 
     public function table(Table $table): Table
@@ -60,9 +64,11 @@ class MyTimeEntries extends Page implements HasTable
         $skipTypes = ['weekend', 'holiday', 'optional', 'dispensation'];
 
         return $table
-            ->records(fn (): array => collect($this->getCalendarDays())
-                ->mapWithKeys(fn (array $day, int $key): array => [$key + 1 => $day])
-                ->all())
+            ->records(fn (): array => $this->selectedEmployeeId
+                ? collect($this->getCalendarDays())
+                    ->mapWithKeys(fn (array $day, int $key): array => [$key + 1 => $day])
+                    ->all()
+                : [])
             ->columns([
                 TextColumn::make('date')
                     ->label('Dia'),
@@ -94,7 +100,7 @@ class MyTimeEntries extends Page implements HasTable
                     ->icon(fn (array $record): ?string => $record['type'] === 'absent' ? 'heroicon-m-exclamation-triangle' : null),
             ])
             ->recordActions([
-                Action::make('fill')
+                Action::make('edit')
                     ->label('Preencher')
                     ->icon('heroicon-m-pencil-square')
                     ->modalHeading(fn (array $record): string => "Ponto de {$record['date']} — {$record['weekday']}")
@@ -123,15 +129,16 @@ class MyTimeEntries extends Page implements HasTable
                         'afternoon_exit' => $record['afternoon_exit'],
                     ])
                     ->action(function (array $record, array $data): void {
-                        $employee = $this->getEmployee();
-
                         TimeEntry::updateOrCreate(
-                            ['employee_id' => $employee->id, 'date' => $record['date_raw']],
+                            [
+                                'employee_id' => $this->selectedEmployeeId,
+                                'date' => $record['date_raw'],
+                            ],
                             array_filter($data, fn (?string $value): bool => $value !== null && $value !== ''),
                         );
 
                         Notification::make()
-                            ->title('Ponto salvo!')
+                            ->title('Ponto salvo com sucesso!')
                             ->success()
                             ->send();
                     })
@@ -149,17 +156,17 @@ class MyTimeEntries extends Page implements HasTable
             ->striped(false);
     }
 
-    public function getEmployee(): Employee
-    {
-        return auth()->user()->employee;
-    }
-
     /**
-     * @return array<int, array{date: string, weekday: string, type: string, morning_entry: ?string, morning_exit: ?string, afternoon_entry: ?string, afternoon_exit: ?string, observation: ?string}>
+     * @return array<int, array{date: string, date_raw: string, weekday: string, type: string, morning_entry: ?string, morning_exit: ?string, afternoon_entry: ?string, afternoon_exit: ?string, observation: ?string}>
      */
     public function getCalendarDays(): array
     {
-        $employee = $this->getEmployee();
+        $employee = Employee::find($this->selectedEmployeeId);
+
+        if (! $employee) {
+            return [];
+        }
+
         $startOfMonth = Carbon::create($this->selectedYear, $this->selectedMonth, 1)->startOfMonth();
         $endOfMonth = $startOfMonth->copy()->endOfMonth();
         $today = Carbon::today();
@@ -201,6 +208,8 @@ class MyTimeEntries extends Page implements HasTable
     }
 
     /**
+     * @param  Collection<int, Holiday>  $holidays
+     * @param  Collection<int, string>  $employeeHolidayReasons
      * @return array{type: string, observation: ?string}
      */
     private function classifyDay(
@@ -315,5 +324,13 @@ class MyTimeEntries extends Page implements HasTable
         $currentYear = (int) now()->year;
 
         return range($currentYear - 2, $currentYear);
+    }
+
+    /**
+     * @return Collection<int, Employee>
+     */
+    public function getEmployees(): Collection
+    {
+        return Employee::query()->orderBy('name')->get();
     }
 }

@@ -36,8 +36,8 @@ class ClockInWidget extends Widget
 
         $todayEntry = $this->getTodayEntry();
 
-        $this->selectedShift = $todayEntry?->shift_override?->value
-            ?? $this->defaultShiftValue;
+        $this->selectedShift =
+            $todayEntry?->shift_override?->value ?? $this->defaultShiftValue;
     }
 
     public function getEmployee(): Employee
@@ -53,32 +53,26 @@ class ClockInWidget extends Widget
     }
 
     /**
+     * Retorna o último campo vazio da sequência do turno.
+     * Campos anteriores vazios serão preenchidos automaticamente no clockIn().
+     *
      * @return array{field: string, label: string}|null
      */
     public function getNextField(): ?array
     {
         $entry = $this->getTodayEntry();
         $shift = Shift::from($this->selectedShift);
+        $fields = $shift->getFieldSequence();
 
-        if ($shift === Shift::Morning) {
-            if (! $entry || $entry->morning_entry === null) {
-                return ['field' => 'morning_entry', 'label' => 'Entrada Manhã'];
-            }
-            if ($entry->morning_exit === null) {
-                return ['field' => 'morning_exit', 'label' => 'Saída Manhã'];
+        $lastNull = null;
+
+        foreach ($fields as $field => $label) {
+            if (! $entry || $entry->$field === null) {
+                $lastNull = ['field' => $field, 'label' => $label];
             }
         }
 
-        if ($shift === Shift::Afternoon) {
-            if (! $entry || $entry->afternoon_entry === null) {
-                return ['field' => 'afternoon_entry', 'label' => 'Entrada Tarde'];
-            }
-            if ($entry->afternoon_exit === null) {
-                return ['field' => 'afternoon_exit', 'label' => 'Saída Tarde'];
-            }
-        }
-
-        return null;
+        return $lastNull;
     }
 
     public function clockIn(): void
@@ -94,10 +88,11 @@ class ClockInWidget extends Widget
             return;
         }
 
-        $now = Carbon::now()->format('H:i');
         $shift = Shift::from($this->selectedShift);
         $defaultShift = Shift::from($this->defaultShiftValue);
         $shiftOverride = $shift !== $defaultShift ? $shift : null;
+        $fixedTimes = $shift->getFixedTimes();
+        $fields = $shift->getFieldSequence();
 
         $entry = $this->getTodayEntry();
 
@@ -111,13 +106,31 @@ class ClockInWidget extends Widget
             $entry->update(['shift_override' => $shiftOverride]);
         }
 
-        $entry->update([
-            $nextField['field'] => $now,
-        ]);
+        // Preenche todos os campos nulos até o campo alvo (inclusive)
+        $updates = [];
+        foreach ($fields as $field => $label) {
+            if ($entry->$field === null) {
+                $updates[$field] = $fixedTimes[$field];
+            }
+            if ($field === $nextField['field']) {
+                break;
+            }
+        }
+
+        $entry->update($updates);
+
+        $autoFilled = array_filter($updates, fn (string $field): bool => $field !== $nextField['field'], ARRAY_FILTER_USE_KEY);
+
+        $body = "{$nextField['label']} registrado às {$fixedTimes[$nextField['field']]}.";
+
+        if (! empty($autoFilled)) {
+            $autoFilledLabels = array_map(fn (string $field): string => "{$fields[$field]} ({$fixedTimes[$field]})", array_keys($autoFilled));
+            $body .= ' Pontos anteriores preenchidos automaticamente: '.implode(', ', $autoFilledLabels).'.';
+        }
 
         Notification::make()
             ->title('Ponto marcado!')
-            ->body("{$nextField['label']} registrado às {$now}.")
+            ->body($body)
             ->success()
             ->send();
     }

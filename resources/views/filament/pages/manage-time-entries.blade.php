@@ -1,7 +1,15 @@
 <x-filament-panels::page>
     <x-filament::section>
-        {{-- Filters --}}
         <div class="flex flex-wrap items-end gap-4">
+            <x-filament::input.wrapper class="w-64">
+                <x-filament::input.select wire:model.live="selectedEmployeeId">
+                    <option value="">— Selecione um colaborador —</option>
+                    @foreach ($this->getEmployees() as $employee)
+                        <option value="{{ $employee->id }}">{{ $employee->name }}</option>
+                    @endforeach
+                </x-filament::input.select>
+            </x-filament::input.wrapper>
+
             <x-filament::input.wrapper class="w-48">
                 <x-filament::input.select wire:model.live="selectedMonth">
                     @foreach ($this->getMonthOptions() as $option)
@@ -29,5 +37,13 @@
         </div>
     </x-filament::section>
 
-    {{ $this->table }}
+    @if ($selectedEmployeeId)
+        {{ $this->table }}
+    @else
+        <x-filament::section>
+            <div class="py-6 text-center text-sm text-gray-500 dark:text-gray-400">
+                Selecione um colaborador para visualizar e editar os pontos.
+            </div>
+        </x-filament::section>
+    @endif
 </x-filament-panels::page>
